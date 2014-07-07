@@ -1,29 +1,49 @@
 "use strict";
 
-var app = require( "../js/app.js" );
-
 var $ = require( "jquery" );
+var extend = require( "extend" );
 
 var saveButton = $( "#saveButton" );
 var openButton = $( "#openButton" );
 var saveFile = $( "#saveFile" );
 var openFile = $( "#openFile" );
 
-var editor = $( "#editor" );
-
 openButton.click( function() {
+  console.log( "open button click" );
   openFile.click();
 });
 
-saveButton.click( function() {
-  saveFile.click();
-});
+saveButton.click( function() {});
 
-openFile.change( function() {
-  $( "#path" ).html( this.value );
-  app.currentFile.open( this.value ).then( function() {
-    $( "#editor" ).html( app.currentFile.contents );
+module.exports = function( app ) {
+
+  if ( app.actions == null ) {
+    app.actions = {};
+  }
+
+  extend( app.actions, {
+    open: function( path ) {
+      return app.currentFile.open( path ).then( function() {
+        return app.editor.setHTML( app.currentFile.contents );
+      }).then( function() {
+        console.log( "Should go find the git repo here" );
+      });
+    },
+    save: function() {
+      var contents = app.editor.getHTML();
+      return app.currentFile.save( contents ).then( function() {
+        console.log( "Saved." );
+      });
+    }
   });
-});
 
+  openFile.change( function() {
+    app.actions.open( this.value );
+  });
 
+  saveFile.click( function() {
+    app.actions.save();
+  });
+
+  return app;
+};

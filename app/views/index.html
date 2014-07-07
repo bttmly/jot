@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" href="../bower_components/fontawesome/css/font-awesome.css">
     <link rel="stylesheet" href="../bower_components/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="../bower_components/quill/dist/themes/quill.snow.css">
 </head>
 <body>
 	<h1>scrivener</h1>
@@ -20,13 +21,14 @@
 
   <div id="editor"></div>
 
-  <script src="../../node_modules/quilljs/dist/quill.js"></script>
+  <script src="../bower_components/quill/dist/quill.js"></script>
 
-  <!-- 
-    <script>
-      window.app = {};
-    </script>
-  -->
-  <script src="../js/file-input-reader.js"></script>
+  <script>
+    window.quillInstance = new Quill( "#editor" );
+  </script>
+
+  <script src="../js/init.js"></script>
+
+  <!-- <script src="../js/file-input-reader.js"></script> -->
 </body>
 </html>

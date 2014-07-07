@@ -9,12 +9,20 @@ module.exports = ( function( window ) {
     currentFile: require( "../js/file.js" ),
     octonode: require( "../js/as-promised.js" )( "octonode" ),
     git: require( "../js/as-promised.js" )( "gift" ),
-    githubClient: null
+    editor: window.quillInstance,
+    githubClient: null,
+    fileState: {
+      dirtyLocal: false,
+      dirtyGit: false,
+    },
+    log: []
   });
 
   if ( window.app == null ) {
     window.app = app;
   }
+
+  require( "../js/file-input-reader.js" )( app );
 
   return app;
 
