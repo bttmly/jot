@@ -1,3 +1,3 @@
 "use strict";
 
-require( "../js/app.js" );
+window.app = require( "../js/app.js" );

@@ -3,6 +3,10 @@
   "version": "0.0.0",
   "dependencies": {
     "octicons": "~2.1.0",
-    "fontawesome": "~4.1.0"
+    "fontawesome": "~4.1.0",
+    "rangy": "~1.2.3",
+    "hallo": "~1.0.4",
+    "to-markdown": "*",
+    "showdown": "~0.3.1"
   }
 }

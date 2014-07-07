@@ -2,6 +2,8 @@
 
 var $ = require( "jquery" );
 var extend = require( "extend" );
+var toMarkdown = require( "to-markdown" ).toMarkdown;
+var Showdown = require( "showdown" );
 
 var saveButton = $( "#saveButton" );
 var openButton = $( "#openButton" );
@@ -25,20 +27,52 @@ module.exports = function( app ) {
     app.actions = {};
   }
 
+  var markdownize = function( content ) {
+    var html = content
+      .split( "\n" )
+      .map( function( line ) {
+        return ( line.trim() ) || line;
+      })
+      .filter( function( line ) { 
+        return !!line;
+      })
+      .join( "\n" );
+    return toMarkdown( html );
+  };
+
+  var converter = new Showdown.converter();
+  var htmlize = function( content ) {
+    return converter.makeHtml( content );
+  };
+
   extend( app.actions, {
 
     open: function( path ) {
+      app.log( "Opening: " + path );
       return app.currentFile.open( path ).then( function() {
-        return app.editor.setHTML( app.currentFile.contents );
+        var contents = htmlize( app.currentFile.contents );
+        app.editor.html( contents );
+        app.editor.trigger( "hallomodified", { contents: contents } );
+        return;
       }).then( function() {
-        console.log( "Should go find the git repo here" );
+        app.log( "Should go find the git repo here" );
       });
     },
     save: function() {
-      var contents = app.editor.getHTML();
-      return app.currentFile.save( contents ).then( function() {
-        console.log( "Saved." );
-      });
+      var contents = markdownize( app.editor.html() );
+      
+      // working on an existing file
+      if ( app.currentFile.path ) {
+        return app.currentFile.save( contents ).then( function() {
+          app.fileStatus.dirtyLocal = false;
+          app.trigger( "statusChange" );
+          app.log( "Saved." );
+        });
+      }
+      // working on a new file
+      else {
+        saveFile.click();
+      }
     },
     close: function() {
       if ( app.fileStatus.dirtyLocal ) {
@@ -47,13 +81,24 @@ module.exports = function( app ) {
         }
       }
       app.currentFile.close();
-      app.editor.setHTML( "" );
+      app.editor.html( "" );
+      app.editor.trigger( "hallomodified", { contents: "" } );
     }
+  });
 
+  app.editor.on( "hallomodified", function() {
+    app.fileStatus.dirtyLocal = true;
+    app.trigger( "statusChange" );
   });
 
   openFile.change( function() {
     app.actions.open( this.value );
+    this.value = "";
+  });
+
+  saveFile.change( function() {
+    app.currentFile.path = this.value;
+    app.actions.save();
   });
 
   saveButton.click( function() {
@@ -74,7 +119,7 @@ module.exports = function( app ) {
     
     app.gh.user.repos( function( err, response ) {
       app.gh.repos = response;
-      console.log( response );
+      app.log( response );
     });
 
   });

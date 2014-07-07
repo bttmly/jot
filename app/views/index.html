@@ -1,18 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>scrivener</title>
+    <title>Scrivener</title>
     <meta charset="utf-8">
-    <!-- <link rel="stylesheet" href="../../bower_components/fontawesome/css/font-awesokme.css"> -->
-    <!-- <link rel="stylesheet" href="../../bower_components/octicons/octicons/octicons.css"> -->
-
     <link rel="stylesheet" href="../bower_components/fontawesome/css/font-awesome.css">
     <link rel="stylesheet" href="../bower_components/octicons/octicons/octicons.css">
-    <link rel="stylesheet" href="../bower_components/quill/dist/themes/quill.snow.css">
+    <link rel="stylesheet" href="../bower_components/jquery-ui/themes/base/jquery-ui.css">
+
+    <style>
+
+      body {
+        font-family: "FrieghtSans Pro", "Helvetica Neue", sans-serif;
+        font-size: 1rem;
+      }
+
+      [contenteditable] {
+        font-family: "FreightSerif Pro", Georgia, serif;
+      }
+
+      input,
+      textarea,
+      button,
+      select {
+        font-size: inherit;
+        font-family: inherit;
+      }
+
+      #editable {
+        margin: 2rem auto;
+      }
+
+    </style>
+
+  
+  
+    <script src="../bower_components/jquery/jquery.js"></script>
+    <script src="../bower_components/jquery-ui/ui/jquery-ui.js"></script>
+    <script src="../bower_components/rangy/rangy-core.js"></script>
+    <script src="../bower_components/showdown/src/showdown.js"></script>
+    <script src="../bower_components/to-markdown/src/to-markdown.js"></script>
+    <script src="../bower_components/hallo/dist/hallo.js"></script>
+
 </head>
 <body>
-	<h1>scrivener</h1>
-	<p>git-powered rich text editor</p>
+  <h1>Scrivener <i class="fa fa-pencil"></i></h1>
+  <p><em>Git-powered cross-platform word processor.</em></p>
+
+
   <button id="openButton">Open File</button>
   <button id="saveButton">Save File</button>
   <button id="closeButton">Close File</button>
@@ -26,16 +60,68 @@
   <input id="saveFile" type="file" style="display:none" accept="text/*/" nwsaveas>
   <p id="path"></p>
 
-  <div id="editor"></div>
+  <div id="editable" contenteditable="true"></div>
+  <textarea id="source"></textarea>
 
-  <script src="../bower_components/quill/dist/quill.js"></script>
+  <!-- <script src="../bower_components/quill/dist/quill.js"></script> -->
+
 
   <script>
-    window.quillInstance = new Quill( "#editor" );
+    // pilfered from http://hallojs.org/demo/markdown/
+    jQuery(document).ready(function() {
+      // Enable Hallo editor
+      window.halloInstance = jQuery('#editable').hallo({
+        plugins: {
+          'halloformat': {},
+          'halloheadings': {},
+          'hallolists': {},
+          'halloreundo': {}
+        },
+        toolbar: 'halloToolbarFixed'
+      });
+
+      var markdownize = function(content) {
+        var html = content.split("\n").map($.trim).filter(function(line) { 
+          return line != "";
+        }).join("\n");
+        return toMarkdown(html);
+      };
+
+      var converter = new Showdown.converter();
+      var htmlize = function(content) {
+        return converter.makeHtml(content);
+      };
+
+      // Method that converts the HTML contents to Markdown
+      var showSource = function(content) {
+        var markdown = markdownize(content);
+        if (jQuery('#source').get(0).value == markdown) {
+          return;
+        }
+        jQuery('#source').get(0).value = markdown;
+      };
+
+
+      var updateHtml = function(content) {
+        if (markdownize(jQuery('#editable').html()) == content) {
+          return;
+        }
+        var html = htmlize(content);
+        jQuery('#editable').html(html); 
+      };
+
+      // Update Markdown every time content is modified
+      jQuery('#editable').bind('hallomodified', function(event, data) {
+        showSource(data.content);
+      });
+      jQuery('#source').bind('keyup', function() {
+        updateHtml(this.value);
+      });
+      showSource(jQuery('#editable').html());
+    }); 
+
   </script>
 
   <script src="../js/init.js"></script>
-
-  <!-- <script src="../js/file-input-reader.js"></script> -->
 </body>
 </html>
