@@ -14,6 +14,7 @@ File.contents = null;
 File.open = function( path ) {
   this.path = path;
   this.contents = null;
+  console.log( "Opening at: " + path );
   return fs.readFileAsync( this.path, "utf-8" ).then( function( contents ) {
     this.contents = contents;
     this.emit( "fileReady" );
@@ -33,6 +34,7 @@ File.save = function( contents ) {
 File.close = function() {
   this.path = null;
   this.contents = null;
+  this.emit( "fileClosed" );
 };
 
 module.exports = File;

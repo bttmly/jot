@@ -10,8 +10,12 @@ module.exports = ( function( window ) {
     octonode: require( "../js/as-promised.js" )( "octonode" ),
     git: require( "../js/as-promised.js" )( "gift" ),
     editor: window.quillInstance,
-    githubClient: null,
-    fileState: {
+    gh: {
+      client: null,
+      user: null,
+      repos: null
+    },
+    fileStatus: {
       dirtyLocal: false,
       dirtyGit: false,
     },
@@ -21,6 +25,18 @@ module.exports = ( function( window ) {
   if ( window.app == null ) {
     window.app = app;
   }
+
+  app.currentFile.on( "fileSaved", function() {
+    app.fileStatus.dirtyLocal = false;
+  });
+
+  app.currentFile.on( "fileClosed", function() {
+    app.fileStatus.dirtyLocal = false;
+  });
+
+  app.editor.on( "text-change", function() {
+    app.fileStatus.dirtyLocal = true;
+  });
 
   require( "../js/file-input-reader.js" )( app );
 
