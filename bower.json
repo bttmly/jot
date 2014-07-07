@@ -1,0 +1,8 @@
+{
+  "name": "package",
+  "version": "0.0.0",
+  "dependencies": {
+    "octicons": "~2.1.0",
+    "fontawesome": "~4.1.0"
+  }
+}

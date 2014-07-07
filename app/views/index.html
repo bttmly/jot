@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>scrivener</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../bower_components/fontawesome/css/font-awesokme.css">
+    <link rel="stylesheet" href="../../bower_components/octicons/octicons/octicons.css">
+</head>
+<body>
+	<h1>scrivener</h1>
+	<p>git-powered rich text editor</p>
+  <button id="openButton">Open File</button>
+  <button id="saveButton">Save File</button>
+  <input id="openFile" type="file" style="display:none" accept="text/*/">
+  <input id="saveFile" type="file" style="display:none" accept="text/*/" nwsaveas>
+  <p id="path"></p>
+
+  <div id="editor"></div>
+
+  <script src="../../node_modules/quilljs/dist/quill.js"></script>
+
+  <script>
+
+    window.app = {};
+
+  </script>
+
+
+  <script src="../js/file-input-reader.js"></script>
+</body>
+</html>

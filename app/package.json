@@ -1,0 +1,16 @@
+{
+  "name": "scrivener",
+  "main": "views/index.html",
+  "version": "0.0.1",
+  "single-instance": false,
+  "window": {
+    "title": "scrivener",
+    "width": 1300,
+    "height": 650,
+    "min_width": 650,
+    "min_height": 650,
+    "toolbar": true
+  },
+  "chromium-args": "--child-clean-exit",
+  "node-remote" : "<local>"
+}
