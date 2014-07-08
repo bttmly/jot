@@ -98,7 +98,7 @@ module.exports = function (grunt) {
       },
       finalWindowsApp: {
         options: {
-          archive: '<%= config.dist %>/jot.zip'
+          archive: '<%= config.dist %>/Jot.zip'
         },
         files: [{
           expand: true,
@@ -111,7 +111,7 @@ module.exports = function (grunt) {
       app: {
         files: [{
           src: '<%= config.dist %>/node-webkit.app',
-          dest: '<%= config.dist %>/jot.app'
+          dest: '<%= config.dist %>/Jot.app'
         }]
       },
       zipToApp: {
@@ -125,10 +125,10 @@ module.exports = function (grunt) {
 
   grunt.registerTask('chmod', 'Add lost Permissions.', function () {
     var fs = require('fs');
-    fs.chmodSync('dist/jot.app/Contents/Frameworks/node-webkit Helper EH.app/Contents/MacOS/node-webkit Helper EH', '555');
-    fs.chmodSync('dist/jot.app/Contents/Frameworks/node-webkit Helper NP.app/Contents/MacOS/node-webkit Helper NP', '555');
-    fs.chmodSync('dist/jot.app/Contents/Frameworks/node-webkit Helper.app/Contents/MacOS/node-webkit Helper', '555');
-    fs.chmodSync('dist/jot.app/Contents/MacOS/node-webkit', '555');
+    fs.chmodSync('dist/Jot.app/Contents/Frameworks/node-webkit Helper EH.app/Contents/MacOS/node-webkit Helper EH', '555');
+    fs.chmodSync('dist/Jot.app/Contents/Frameworks/node-webkit Helper NP.app/Contents/MacOS/node-webkit Helper NP', '555');
+    fs.chmodSync('dist/Jot.app/Contents/Frameworks/node-webkit Helper.app/Contents/MacOS/node-webkit Helper', '555');
+    fs.chmodSync('dist/Jot.app/Contents/MacOS/node-webkit', '555');
   });
 
   grunt.registerTask('createLinuxApp', 'Create linux distribution.', function (version) {
@@ -157,7 +157,7 @@ module.exports = function (grunt) {
     concat([
       'tmp/nw.exe',
       'tmp/app.nw'
-    ], 'tmp/jot.exe', function () {
+    ], 'tmp/Jot.exe', function () {
       var fs = require('fs');
       fs.unlink('tmp/app.nw', function (error, stdout, stderr) {
         if (stdout) {
@@ -255,7 +255,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('dmg', 'Create dmg from previously created app folder in dist.', function () {
     var done = this.async();
-    var createDmgCommand = 'resources/mac/package.sh "jot"';
+    var createDmgCommand = 'resources/mac/package.sh "Jot"';
     require('child_process').exec(createDmgCommand, function (error, stdout, stderr) {
       var result = true;
       if (stdout) {

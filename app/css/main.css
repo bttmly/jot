@@ -1,0 +1,205 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+ * v2.0 | 20110126
+ * License: none (public domain) */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block; }
+
+body {
+  line-height: 1; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: "";
+  content: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box; }
+
+body,
+html {
+  margin: 0;
+  padding: 0; }
+
+input,
+button,
+textarea,
+select {
+  font-size: inherit;
+  font-family: inherit; }
+
+body {
+  font-size: 16px;
+  font-family: "Gotham HTF", "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
+  font-weight: 300; }
+
+.btn {
+  background: transparent;
+  border: 1px solid #2980b9;
+  padding: 0.25em 0.5em;
+  border-radius: 0.25rem;
+  color: #2980b9; }
+  .btn:hover {
+    background: #2981bb;
+    color: white; }
+  .btn:active {
+    outline: none; }
+  .btn.active {
+    background: #2980b9;
+    color: white; }
+
+.btn-l,
+.btn-group-l .btn {
+  font-size: 125%; }
+
+.btn-xl,
+.btn-group-xl .btn {
+  font-size: 150%; }
+
+.btn-group .btn {
+  margin-left: 0;
+  margin-right: 0;
+  border-radius: 0;
+  float: left;
+  border-left-width: 0; }
+  .btn-group .btn:first-of-type {
+    border-left-width: 1px;
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem; }
+  .btn-group .btn:last-of-type {
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem; }
+
+label.checkable {
+  line-height: 1.5;
+  min-height: 1.5em;
+  display: inline-block;
+  margin: 0.25rem; }
+  label.checkable.block {
+    display: block; }
+  label.checkable input[type='checkbox'],
+  label.checkable input[type='radio'] {
+    position: absolute;
+    left: -9999px; }
+  label.checkable input[type='checkbox']:focus ~ .indicator,
+  label.checkable input[type='radio']:focus ~ .indicator {
+    border-color: white;
+    box-shadow: 0 0 0 4px #2980b9; }
+  label.checkable .indicator {
+    display: inline-block;
+    position: relative;
+    top: 0.125rem;
+    margin-right: 0.25em;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 3px;
+    background: #dddddd;
+    box-sizing: content-box;
+    border: 1px solid transparent;
+    box-shadow: none;
+    transition: 0.15s ease-in-out;
+    transition-property: box-shadow, background; }
+  label.checkable [type='radio'] ~ .indicator {
+    border-radius: 50%; }
+  label.checkable input:checked ~ .indicator {
+    background: #2980b9; }
+  label.checkable .indicator:after {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    transition: 0.15s ease-in-out;
+    border-color: transparent;
+    transition-property: border-color, background-color; }
+  label.checkable [type='checkbox']:checked ~ .indicator:after {
+    position: absolute;
+    top: 0.1875rem;
+    left: 0.125rem;
+    width: 0.75rem;
+    height: 0.5rem;
+    border: 0.25rem solid white;
+    border-top: none;
+    border-right: none;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    transform: rotate(-45deg); }
+  label.checkable [type='radio']:checked ~ .indicator:after {
+    position: absolute;
+    top: 0.25rem;
+    left: 0.25rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: white; }
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; }
+  .app .controls {
+    height: 8rem; }
+  .app .page {
+    flex: 1; }
+
+.controls {
+  padding: 1em;
+  position: fixed;
+  background: white;
+  width: 100%;
+  box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.2); }
+
+.formatting-toolbar:after {
+  content: "";
+  clear: both;
+  display: block; }
+
+.file-toolbar {
+  padding: 1em; }
+  .file-toolbar .btn-group {
+    display: inline-block;
+    text-align: center; }
+
+.backdrop {
+  background: #dddddd;
+  padding: 8rem 2rem 2rem 2rem; }
+
+.editor-wrapper {
+  box-sizing: content-box;
+  padding: 1in;
+  background: white;
+  box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.1);
+  margin-left: auto;
+  margin-right: auto;
+  width: 800px;
+  min-height: 600px; }
+
+.editor {
+  font-family: "FreightSans Pro", "Mercury", "Minion";
+  font-size: 125%;
+  max-width: 900px; }
+  .editor:focus {
+    outline: none; }

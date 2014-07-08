@@ -1,19 +1,38 @@
-/*.btn {
-  background: transparent;
-  border: 1px solid #2980b9;
-  padding: .25em .5em;
-  border-radius: 3px;
-  color: #2980b9;
-  margin: .25rem;
-}
-
-.btn:hover {
-  background: #2980b9;
-  color: white;
-}*/
-
-@import "variables"
+@import "variables.sass"
 
 .btn
   background: transparent
-  border: 1px solid $
+  border: 1px solid $primary_color
+  padding: $rel_xs $rel_s
+  border-radius: $abs_xs
+  color: $primary_color
+  &:hover
+    background: lighten( $primary_color, .4 )
+    color: #fff
+  &:active
+    outline: none
+  &.active
+    background: $primary_color
+    color: #fff
+
+.btn-l,
+.btn-group-l .btn
+  font-size: 125%
+
+.btn-xl,
+.btn-group-xl .btn
+  font-size: 150%
+
+.btn-group .btn
+  margin-left: 0
+  margin-right: 0
+  border-radius: 0
+  float: left
+  border-left-width: 0
+  &:first-of-type
+    border-left-width: 1px
+    border-top-left-radius: $abs_xs
+    border-bottom-left-radius: $abs_xs
+  &:last-of-type
+    border-top-right-radius: $abs_xs
+    border-bottom-right-radius: $abs_xs

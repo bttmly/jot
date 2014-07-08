@@ -5,78 +5,7 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="../bower_components/fontawesome/css/font-awesome.css">
     <link rel="stylesheet" href="../bower_components/octicons/octicons/octicons.css">
-    <link rel="stylesheet" href="../bower_components/jquery-ui/themes/base/jquery-ui.css">
-
-    <style>
-
-      *, *:before, *:after {
-        box-sizing: border-box;
-      }
-
-      body {
-        font-family: "FrieghtSans Pro", "Helvetica Neue", sans-serif;
-        font-size: 1rem;
-      }
-
-      input,
-      textarea,
-      button,
-      select {
-        font-size: inherit;
-        font-family: inherit;
-      }
-
-      .editor {
-        margin: 2rem auto;
-        padding: 1em;
-        font-family: "FreightSerif Pro", Georgia, serif;
-        box-sizing: content-box;
-        border: 1px solid #333;
-        box-shadow: none;
-        transition: box-shadow .2s ease-in-out;
-      }
-
-      .editor:focus {
-        outline: none;
-        box-shadow: 0 0 2px 2px rgba( 0, 0, 0, .25 );
-      }
-
-      .btn {
-        background: transparent;
-        border: 1px solid #2980b9;
-        padding: .25em .5em;
-        border-radius: 3px;
-        color: #2980b9;
-        margin: .25rem;
-      }
-
-      .btn:hover {
-        background: #2980b9;
-        color: white;
-      }
-
-      .indicator {
-        display: inline-block;
-        width: 2rem;
-        height: 2rem;
-        border-radius: 50%;
-        margin: .5rem;
-        background: #27ae60;
-        color: white;
-        transition: background .25s ease-in-out;
-      }
-
-      .indicator .fa,
-      .indicator .octicon {
-        font-size: 1rem;
-        line-height: 2rem;
-      }
-
-      .indicator.dirty {
-        background-color: #c0392b;
-      }
-
-    </style>
+    <link rel="stylesheet" href="../css/main.css">
 
     <script src="../bower_components/jquery/jquery.js"></script>
     <script src="../bower_components/jquery-ui/ui/jquery-ui.js"></script>
@@ -85,22 +14,20 @@
     <script src="../bower_components/to-markdown/src/to-markdown.js"></script>
     <script src="../js/vendor/scribe-browserify.js"></script>    
     <script src="../bower_components/mousetrap/mousetrap.js"></script>
-    <!-- 
-    <script src="../bower_components/hallo/dist/hallo.js"></script>
-     -->
 
 </head>
 <body>
 
+  <!--
   <div class="about" id="about">
     <h1>Jot</h1>
     <p><em>Git-powered cross-platform word processor.</em></p>
   </div>
+  -->
+  <div class="app" id="app">
+    <div class="controls" id="controls">
+      <div class="persistence-toolbar">
 
-  <div class="controls" id="controls">
-    <div class="persistence-controls">
-
-      <div class="indicators" id="indicators">
         <span title="File Status" class="indicator file-indicator">
           <i class="fa fa-save"></i>
         </span>
@@ -110,95 +37,113 @@
         <span title="Remote Status" class="indicator git-remote-indicator">
           <i class="octicon octicon-repo-push"></i>
         </span>
+
+        <button class="btn" id="openButton">Open</button>
+        <button class="btn" id="saveButton">Save</button>
+        <button class="btn" id="closeButton">Close</button>
+
+        <label class="checkable">
+          <input type="checkbox" id="commitOnSave">
+          <span class="indicator"></span>
+          Commit on Save
+        </label>
+
+        <label class="checkable">
+          <input type="checkbox" id="pushOnSave">
+          <span class="indicator"></span>
+          Push on Save
+        </label>
+
+        <button class="btn" id="commitButton">Commit</button>
+        <button class="btn" id="pushButton">Push</button>
+
+        <input id="openFile" type="file" style="display:none" accept="text/*/">
+        <input id="saveFile" type="file" style="display:none" accept="text/*/" nwsaveas>
+
+      </div> <!-- /.persistence-controls -->
+
+      <div class="formatting-toolbar" id="editor-toolbar">
+        <div class="btn-group btn-group-xl">
+          <button class="btn btn-command" data-command-name="bold">
+            <i class="fa fa-bold"></i>
+          </button>
+          
+          <button class="btn btn-command" data-command-name="italic">
+            <i class="fa fa-italic"></i>
+          </button>
+          
+          <button class="btn btn-command" data-command-name="underline">
+            <i class="fa fa-underline"></i>
+          </button>
+        
+          <button class="btn btn-command" data-command-name="createLink">
+            <i class="fa fa-link"></i>
+          </button>
+          
+          <button class="btn btn-command" data-command-name="insertUnorderedList">
+            <i class="fa fa-list"></i>
+          </button>
+          
+          <button class="btn btn-command" data-command-name="insertOrderedList">
+            <i class="fa fa-list-ol"></i>
+          </button>
+          
+          <button class="btn btn-command" data-command-name="indent">
+            <i class="fa fa-indent"></i>
+          </button>
+          
+          <button class="btn btn-command" data-command-name="outdent">
+            <i class="fa fa-outdent"></i>
+          </button>
+          
+          <button class="btn btn-command" data-command-name="undo">
+            <i class="fa fa-undo"></i>
+          </button>
+          
+          <button class="btn btn-command" data-command-name="redo">
+            <i class="fa fa-repeat"></i>
+          </button>
+
+          <button class="btn btn-command" data-command-name="superscript">
+            <i class="fa fa-superscript"></i>
+          </button>
+          
+          <button class="btn btn-command" data-command-name="subscript">
+            <i class="fa fa-subscript"></i>
+          </button>
+        </div>
       </div>
 
-      <div class="filesystem-ui" id="filesystem-ui">
-        <button class="btn" id="openButton">Open File</button>
-        <button class="btn" id="saveButton">Save File</button>
-        <button class="btn" id="closeButton">Close File</button>
+    </div> <!-- /.controls -->
+
+    <div class="page" id="page">
+      <div class="backdrop">
+        <div class="editor-wrapper" id="editor-wrapper">
+          <div id="editor" class="editor" contenteditable="true"></div>
+        </div>
       </div>
-
-      <label class="checkbox">
-        <input type="checkbox" id="commitOnSave">
-        <span class="indicator"></span>
-        Commit on Save
-      </label>
-
-      <label class="checkbox">
-        <input type="checkbox" id="pushOnSave">
-        <span class="indicator"></span>
-        Push on Save
-      </label>
-
-      <button class="btn" id="commitButton">Commit</button>
-      <button class="btn" id="pushButton">Push</button>
-
-      <input id="openFile" type="file" style="display:none" accept="text/*/">
-      <input id="saveFile" type="file" style="display:none" accept="text/*/" nwsaveas>
-
-    </div> <!-- /.persistence-controls -->
-
-    <div class="formatting-controls" id="editor-toolbar">
-      <button class="btn btn-command" data-command-name="bold">
-        <i class="fa fa-bold"></i>
-      </button>
-      
-      <button class="btn btn-command" data-command-name="italic">
-        <i class="fa fa-italic"></i>
-      </button>
-      
-      <button class="btn btn-command" data-command-name="underline">
-        <i class="fa fa-underline"></i>
-      </button>
-    
-      <button class="btn btn-command" data-command-name="createLink">
-        <i class="fa fa-link"></i>
-      </button>
-      
-      <button class="btn btn-command" data-command-name="insertUnorderedList">
-        <i class="fa fa-list"></i>
-      </button>
-      
-      <button class="btn btn-command" data-command-name="insertOrderedList">
-        <i class="fa fa-list-ol"></i>
-      </button>
-      
-      <button class="btn btn-command" data-command-name="indent">
-        <i class="fa fa-indent"></i>
-      </button>
-      
-      <button class="btn btn-command" data-command-name="outdent">
-        <i class="fa fa-outdent"></i>
-      </button>
-      
-      <button class="btn btn-command" data-command-name="undo">
-        <i class="fa fa-undo"></i>
-      </button>
-      
-      <button class="btn btn-command" data-command-name="redo">
-        <i class="fa fa-repeat"></i>
-      </button>
-
-      <button class="btn btn-command" data-command-name="superscript">
-        <i class="fa fa-superscript"></i>
-      </button>
-      
-      <button class="btn btn-command" data-command-name="subscript">
-        <i class="fa fa-subscript"></i>
-      </button>
     </div>
 
-  </div> <!-- /.control-bar -->
-
-  <div id="editor" class="editor" contenteditable="true"></div>
+  </div> <!-- /.app -->
 
   <script>
     var editorEl = document.getElementById( "editor" );
     var toolbarEl = document.getElementById( "editor-toolbar" );
     var editor = window.editor = new Scribe( editorEl );
     editor.use( Scribe.plugins.toolbar( toolbarEl ) );
-  </script>
 
+
+    $( document ).ready( function() {
+
+      $( "#page" ).on( "click", function() {
+        $( "#editor" ).focus();
+      });
+
+    });
+
+  </script>
+  
+  <script src="../js/scribe-init.js"></script>
   <script src="../js/init.js"></script>
 </body>
 </html>
