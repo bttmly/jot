@@ -9,13 +9,13 @@
 
     <style>
 
+      *, *:before, *:after {
+        box-sizing: border-box;
+      }
+
       body {
         font-family: "FrieghtSans Pro", "Helvetica Neue", sans-serif;
         font-size: 1rem;
-      }
-
-      [contenteditable] {
-        font-family: "FreightSerif Pro", Georgia, serif;
       }
 
       input,
@@ -26,9 +26,19 @@
         font-family: inherit;
       }
 
-      #editable {
+      .editor {
         margin: 2rem auto;
         padding: 1em;
+        font-family: "FreightSerif Pro", Georgia, serif;
+        box-sizing: content-box;
+        border: 1px solid #333;
+        box-shadow: none;
+        transition: box-shadow .2s ease-in-out;
+      }
+
+      .editor:focus {
+        outline: none;
+        box-shadow: 0 0 2px 2px rgba( 0, 0, 0, .25 );
       }
 
       .btn {
@@ -66,21 +76,6 @@
         background-color: #c0392b;
       }
 
-      label.checkbox [type='checkbox'] ,
-      label.radio [type='radio'] {
-        display: none;
-      }
-
-      label.checkbox .indicator,
-      label.radio .indicator {
-        background: #eee;
-      }
-
-      label.checkbox :checked ~ .indicator,
-      label.radio :checked ~ .indicator {
-        background: #27ae60;
-      }
-
     </style>
 
     <script src="../bower_components/jquery/jquery.js"></script>
@@ -88,8 +83,11 @@
     <script src="../bower_components/rangy/rangy-core.js"></script>
     <script src="../bower_components/showdown/src/showdown.js"></script>
     <script src="../bower_components/to-markdown/src/to-markdown.js"></script>
-    <script src="../bower_components/hallo/dist/hallo.js"></script>
+    <script src="../js/vendor/scribe-browserify.js"></script>    
     <script src="../bower_components/mousetrap/mousetrap.js"></script>
+    <!-- 
+    <script src="../bower_components/hallo/dist/hallo.js"></script>
+     -->
 
 </head>
 <body>
@@ -99,93 +97,107 @@
     <p><em>Git-powered cross-platform word processor.</em></p>
   </div>
 
-  <div class="indicators" id="indicators">
-    <span title="File Status" class="indicator file-indicator">
-      <i class="fa fa-save"></i>
-    </span>
-    <span title="Local Status" class="indicator git-local-indicator">
-      <i class="octicon octicon-git-commit"></i>
-    </span>
-    <span title="Remote Status" class="indicator git-remote-indicator">
-      <i class="octicon octicon-repo-push"></i>
-    </span>
-  </div>
+  <div class="controls" id="controls">
+    <div class="persistence-controls">
 
-  <div class="filesystem-ui" id="filesystem-ui">
-    <button class="btn" id="openButton">Open File</button>
-    <button class="btn" id="saveButton">Save File</button>
-    <button class="btn" id="closeButton">Close File</button>
-  </div>
+      <div class="indicators" id="indicators">
+        <span title="File Status" class="indicator file-indicator">
+          <i class="fa fa-save"></i>
+        </span>
+        <span title="Local Status" class="indicator git-local-indicator">
+          <i class="octicon octicon-git-commit"></i>
+        </span>
+        <span title="Remote Status" class="indicator git-remote-indicator">
+          <i class="octicon octicon-repo-push"></i>
+        </span>
+      </div>
 
-  <label class="checkbox">
-    <input type="checkbox" id="commitOnSave">
-    <span class="indicator"></span>
-    Commit on Save
-  </div>
+      <div class="filesystem-ui" id="filesystem-ui">
+        <button class="btn" id="openButton">Open File</button>
+        <button class="btn" id="saveButton">Save File</button>
+        <button class="btn" id="closeButton">Close File</button>
+      </div>
 
-  <label class="checkbox">
-    <input type="checkbox" id="pushOnSave">
-    <span class="indicator"></span>
-    Push on Save
-  </div>
+      <label class="checkbox">
+        <input type="checkbox" id="commitOnSave">
+        <span class="indicator"></span>
+        Commit on Save
+      </label>
 
-  <button class="btn" id="commitButton">Commit</button>
-  <button class="btn" id="pushButton">Push</button>
+      <label class="checkbox">
+        <input type="checkbox" id="pushOnSave">
+        <span class="indicator"></span>
+        Push on Save
+      </label>
 
-  <input id="openFile" type="file" style="display:none" accept="text/*/">
-  <input id="saveFile" type="file" style="display:none" accept="text/*/" nwsaveas>
+      <button class="btn" id="commitButton">Commit</button>
+      <button class="btn" id="pushButton">Push</button>
 
-  <div id="editable" contenteditable="true"></div>
+      <input id="openFile" type="file" style="display:none" accept="text/*/">
+      <input id="saveFile" type="file" style="display:none" accept="text/*/" nwsaveas>
+
+    </div> <!-- /.persistence-controls -->
+
+    <div class="formatting-controls" id="editor-toolbar">
+      <button class="btn btn-command" data-command-name="bold">
+        <i class="fa fa-bold"></i>
+      </button>
+      
+      <button class="btn btn-command" data-command-name="italic">
+        <i class="fa fa-italic"></i>
+      </button>
+      
+      <button class="btn btn-command" data-command-name="underline">
+        <i class="fa fa-underline"></i>
+      </button>
+    
+      <button class="btn btn-command" data-command-name="createLink">
+        <i class="fa fa-link"></i>
+      </button>
+      
+      <button class="btn btn-command" data-command-name="insertUnorderedList">
+        <i class="fa fa-list"></i>
+      </button>
+      
+      <button class="btn btn-command" data-command-name="insertOrderedList">
+        <i class="fa fa-list-ol"></i>
+      </button>
+      
+      <button class="btn btn-command" data-command-name="indent">
+        <i class="fa fa-indent"></i>
+      </button>
+      
+      <button class="btn btn-command" data-command-name="outdent">
+        <i class="fa fa-outdent"></i>
+      </button>
+      
+      <button class="btn btn-command" data-command-name="undo">
+        <i class="fa fa-undo"></i>
+      </button>
+      
+      <button class="btn btn-command" data-command-name="redo">
+        <i class="fa fa-repeat"></i>
+      </button>
+
+      <button class="btn btn-command" data-command-name="superscript">
+        <i class="fa fa-superscript"></i>
+      </button>
+      
+      <button class="btn btn-command" data-command-name="subscript">
+        <i class="fa fa-subscript"></i>
+      </button>
+    </div>
+
+  </div> <!-- /.control-bar -->
+
+  <div id="editor" class="editor" contenteditable="true"></div>
 
   <script>
-    // pilfered from http://hallojs.org/demo/markdown/
-    jQuery(document).ready(function() {
-      // Enable Hallo editor
-      window.halloInstance = jQuery('#editable').hallo({
-        plugins: {
-          'halloformat': {},
-          'halloheadings': {},
-          'hallolists': {},
-          'halloreundo': {}
-        },
-        toolbar: 'halloToolbarFixed'
-      });
-
-      var markdownize = function(content) {
-        var html = content.split("\n").map($.trim).filter(function(line) { 
-          return line != "";
-        }).join("\n");
-        return toMarkdown(html);
-      };
-
-      var converter = new Showdown.converter();
-      var htmlize = function(content) {
-        return converter.makeHtml(content);
-      };
-
-      // Method that converts the HTML contents to Markdown
-      var showSource = function(content) {
-        var markdown = markdownize(content);
-        if (jQuery('#source').get(0).value == markdown) {
-          return;
-        }
-        jQuery('#source').get(0).value = markdown;
-      };
-
-
-      var updateHtml = function(content) {
-        if (markdownize(jQuery('#editable').html()) == content) {
-          return;
-        }
-        var html = htmlize(content);
-        jQuery('#editable').html(html); 
-      };
-
-    }); 
-
+    var editorEl = document.getElementById( "editor" );
+    var toolbarEl = document.getElementById( "editor-toolbar" );
+    var editor = window.editor = new Scribe( editorEl );
+    editor.use( Scribe.plugins.toolbar( toolbarEl ) );
   </script>
-
-  <script src="../js/keyboard.js"></script>
 
   <script src="../js/init.js"></script>
 </body>

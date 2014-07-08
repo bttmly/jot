@@ -2,7 +2,6 @@
 
 var extend = require( "extend" );
 var EventEmitter = require( "events" ).EventEmitter;
-var $ = require( "jQuery" );
 
 var app = Object.create( EventEmitter.prototype );
 
@@ -14,12 +13,7 @@ extend( app, {
   currentFile: require( "../js/file.js" ),
   octonode: require( "../js/as-promised.js" )( "octonode" ),
   git: require( "../js/as-promised.js" )( "gift" ),
-  editor: $( "#editable" ),
-  gh: {
-    client: null,
-    user: null,
-    repos: null
-  },
+  editor: window.editor,
   fileStatus: {
     dirtyLocal: false,
     dirtyGit: false,
@@ -41,7 +35,7 @@ app.currentFile.on( "fileClosed", function() {
   app.trigger( "statusChange" );
 });
 
-app.editor.on( "hallomodified", function() {
+app.editor.on( "text-change", function() {
   app.fileStatus.dirtyLocal = true;
   app.trigger( "statusChange" );
 });

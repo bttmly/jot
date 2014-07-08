@@ -68,8 +68,8 @@ module.exports = function( app ) {
       console.log( "Opening: " + path );
       return app.currentFile.open( path ).then( function() {
         var contents = htmlize( app.currentFile.contents );
-        app.editor.html( contents );
-        app.editor.trigger( "hallomodified", { contents: contents } );
+        app.editor.setHTML( contents );
+        app.editor.trigger( "contents-changed" );
         return path;
       }).then( function( path ) {
         var dir = path.split( "/" ).slice( 0, -1 ).join( "/" );
@@ -95,7 +95,7 @@ module.exports = function( app ) {
       });
     },
     save: function() {
-      var contents = markdownize( app.editor.html() );
+      var contents = markdownize( app.editor.getHTML() );
       
       // working on an existing file
       if ( app.currentFile.path ) {
@@ -119,12 +119,12 @@ module.exports = function( app ) {
       }
       app.currentFile.close();
       app.repo = null;
-      app.editor.html( "" );
-      app.editor.trigger( "hallomodified", { contents: "" } );
+      app.editor.setHTML( "" );
+      app.editor.trigger( "content-changed" );
     }
   });
 
-  app.editor.on( "hallomodified", function() {
+  app.editor.on( "content-changed", function() {
     app.fileStatus.dirtyLocal = true;
     app.trigger( "statusChange" );
   });
