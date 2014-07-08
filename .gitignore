@@ -1,5 +1,5 @@
 node_modules
 app/bower_components
 dist
-**/.sass_cache
-**/node-webkit.app
+.sass-cache
+node-webkit

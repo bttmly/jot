@@ -10,11 +10,6 @@ app.trigger = function() {
   app.emit.apply( app, arguments );
 };
 
-// fileStatus:
-// dirtyLocal: true if changes in editor since last SAVE
-// dirtyGit: true if SAVE since last COMMIT
-// dirtyGit: true if COMMIT since last PUSH
-
 extend( app, {
   currentFile: require( "../js/file.js" ),
   octonode: require( "../js/as-promised.js" )( "octonode" ),

@@ -24,21 +24,26 @@
   -->
   <div class="app" id="app">
     <div class="controls" id="controls">
-      <div class="persistence-toolbar">
 
+      <div class="status-indicators">
         <span title="File Status" id="localIndicator" class="status-indicator">
-          <i class="fa fa-save"></i>
+          <!-- <i class="fa fa-save"></i> -->
         </span>
         <span title="Local Status" id="gitIndicator" class="status-indicator">
-          <i class="octicon octicon-git-commit"></i>
+          <!-- <i class="octicon octicon-git-commit"></i> -->
         </span>
         <span title="Remote Status" id="remoteIndicator" class="status-indicator">
-          <i class="octicon octicon-repo-push"></i>
+          <!-- <i class="octicon octicon-repo-push"></i> -->
         </span>
+      </div>
+
+      <div class="persistence-toolbar">
 
         <button class="btn" id="openButton">Open</button>
         <button class="btn" id="saveButton">Save</button>
         <button class="btn" id="closeButton">Close</button>
+        <button class="btn" id="commitButton">Commit</button>
+        <button class="btn" id="pushButton">Push</button>
 
         <label class="checkable">
           <input type="checkbox" id="commitOnSave">
@@ -52,8 +57,7 @@
           Push on Save
         </label>
 
-        <button class="btn" id="commitButton">Commit</button>
-        <button class="btn" id="pushButton">Push</button>
+
 
         <input id="openFile" type="file" style="display:none" accept="text/*/">
         <input id="saveFile" type="file" style="display:none" accept="text/*/" nwsaveas>
