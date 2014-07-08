@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Scrivener</title>
+    <title>Jot</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="../bower_components/fontawesome/css/font-awesome.css">
     <link rel="stylesheet" href="../bower_components/octicons/octicons/octicons.css">
@@ -28,23 +28,88 @@
 
       #editable {
         margin: 2rem auto;
+        padding: 1em;
+      }
+
+      .btn {
+        background: transparent;
+        border: 1px solid #2980b9;
+        padding: .25em .5em;
+        border-radius: 3px;
+        color: #2980b9;
+        margin: .25rem;
+      }
+
+      .btn:hover {
+        background: #2980b9;
+        color: white;
+      }
+
+      .indicator {
+        display: inline-block;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        margin: .5rem;
+        background: #27ae60;
+        color: white;
+        transition: background .25s ease-in-out;
+      }
+
+      .indicator .fa,
+      .indicator .octicon {
+        font-size: 1rem;
+        line-height: 2rem;
+      }
+
+      .indicator.dirty {
+        background-color: #c0392b;
+      }
+
+      label.checkbox [type='checkbox'] ,
+      label.radio [type='radio'] {
+        display: none;
+      }
+
+      label.checkbox .indicator,
+      label.radio .indicator {
+        background: #eee;
+      }
+
+      label.checkbox :checked ~ .indicator,
+      label.radio :checked ~ .indicator {
+        background: #27ae60;
       }
 
     </style>
 
-  
-  
     <script src="../bower_components/jquery/jquery.js"></script>
     <script src="../bower_components/jquery-ui/ui/jquery-ui.js"></script>
     <script src="../bower_components/rangy/rangy-core.js"></script>
     <script src="../bower_components/showdown/src/showdown.js"></script>
     <script src="../bower_components/to-markdown/src/to-markdown.js"></script>
     <script src="../bower_components/hallo/dist/hallo.js"></script>
+    <script src="../bower_components/mousetrap/mousetrap.js"></script>
 
 </head>
 <body>
-  <h1>Scrivener <i class="fa fa-pencil"></i></h1>
-  <p><em>Git-powered cross-platform word processor.</em></p>
+
+  <div class="about" id="about">
+    <h1>Jot</h1>
+    <p><em>Git-powered cross-platform word processor.</em></p>
+  </div>
+
+  <div class="indicators" id="indicators">
+    <span title="File Status" class="indicator file-indicator">
+      <i class="fa fa-save"></i>
+    </span>
+    <span title="Local Status" class="indicator git-local-indicator">
+      <i class="octicon octicon-git-commit"></i>
+    </span>
+    <span title="Remote Status" class="indicator git-remote-indicator">
+      <i class="octicon octicon-repo-push"></i>
+    </span>
+  </div>
 
   <div class="filesystem-ui" id="filesystem-ui">
     <button class="btn" id="openButton">Open File</button>
@@ -52,31 +117,26 @@
     <button class="btn" id="closeButton">Close File</button>
   </div>
 
-  <button class="btn" id="commitButton">Commit</button>
-
-  <div class="github-ui" id="github-ui">
-    <div class="github-login" id="github-login">
-      <input id="githubUsername" type="text" placeholder="GitHub username">
-      <input id="githubPassword" type="password" placeholder="GitHub password">
-      <button class="btn" id="githubLoginButton">Login to GitHub</button>
-    </div>
-    <div class="github-fetch" id="github-fetch">
-      <select id="githubRepoSelect">
-        <option selected disabled>Waiting for repos...</option>
-      </select>
-      <button class="btn" id="githubRepoButton">Get Repo</button>
-    </div>
+  <label class="checkbox">
+    <input type="checkbox" id="commitOnSave">
+    <span class="indicator"></span>
+    Commit on Save
   </div>
+
+  <label class="checkbox">
+    <input type="checkbox" id="pushOnSave">
+    <span class="indicator"></span>
+    Push on Save
+  </div>
+
+  <button class="btn" id="commitButton">Commit</button>
+  <button class="btn" id="pushButton">Push</button>
 
   <input id="openFile" type="file" style="display:none" accept="text/*/">
   <input id="saveFile" type="file" style="display:none" accept="text/*/" nwsaveas>
   <p id="path"></p>
 
   <div id="editable" contenteditable="true"></div>
-  <textarea id="source"></textarea>
-
-  <!-- <script src="../bower_components/quill/dist/quill.js"></script> -->
-
 
   <script>
     // pilfered from http://hallojs.org/demo/markdown/
@@ -122,17 +182,11 @@
         jQuery('#editable').html(html); 
       };
 
-      // Update Markdown every time content is modified
-      jQuery('#editable').bind('hallomodified', function(event, data) {
-        showSource(data.content);
-      });
-      jQuery('#source').bind('keyup', function() {
-        updateHtml(this.value);
-      });
-      showSource(jQuery('#editable').html());
     }); 
 
   </script>
+
+  <script src="../js/keyboard.js"></script>
 
   <script src="../js/init.js"></script>
 </body>

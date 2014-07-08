@@ -7,6 +7,7 @@
     "rangy": "~1.2.3",
     "hallo": "~1.0.4",
     "to-markdown": "*",
-    "showdown": "~0.3.1"
+    "showdown": "~0.3.1",
+    "mousetrap": "~1.4.6"
   }
 }

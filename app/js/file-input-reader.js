@@ -10,14 +10,14 @@ var saveButton = $( "#saveButton" );
 var openButton = $( "#openButton" );
 var closeButton = $( "#closeButton" );
 var commitButton = $( "#commitButton" );
+var pushButton = $( "#pushButton" );
 
+// var githubLoginButton = $( "#githubLoginButton" );
+// var ghUser = $( "#githubUsername" );
+// var ghPass = $( "#githubPassword" );
 
-var githubLoginButton = $( "#githubLoginButton" );
-var ghUser = $( "#githubUsername" );
-var ghPass = $( "#githubPassword" );
-
-var githubRepoSelect = $( "#githubRepoSelect" );
-var githubRepoButton = $( "#githubRepoButton" );
+// var githubRepoSelect = $( "#githubRepoSelect" );
+// var githubRepoButton = $( "#githubRepoButton" );
 
 var saveFile = $( "#saveFile" );
 var openFile = $( "#openFile" ); 
@@ -28,10 +28,10 @@ openButton.click( function() {
   openFile.click();
 });
 
-var buildRepoOptions( repos ) {
+var buildRepoOptions = function( repos ) {
   return repos.map( function( repo ) {
     var str = "";
-    str += "<option value='" + repo.name "'>";
+    str += "<option value='" + repo.name + "'>";
     str += repo.name;
     str += "</option>";
     return str;
@@ -147,22 +147,28 @@ module.exports = function( app ) {
     app.actions.close();
   });
 
-  githubLoginButton.click( function() {
-    app.gh.username = ghUser.val();
-    app.gh.client = require( "octokit" ).new({
-      username: ghUser.val(),
-      password: ghPass.val()
-    });
+  // githubLoginButton.click( function() {
+  //   app.gh.username = ghUser.val();
+  //   app.gh.client = require( "octokit" ).new({
+  //     username: ghUser.val(),
+  //     password: ghPass.val()
+  //   });
 
-    app.gh.user = app.gh.client.getUser( app.gh.username );
+  //   app.gh.user = app.gh.client.getUser( app.gh.username );
 
-    app.gh.user.getRepos().then( function( repos ) {
-      app.gh.repos = repos;
-      githubRepoSelect.html( buildRepoOptions( repos ) );
-    });
-  });
+  //   app.gh.user.getRepos().then( function( repos ) {
+  //     app.gh.repos = repos;
+  //     githubRepoSelect.html( buildRepoOptions( repos ) );
+  //   });
+  // });
+
+  // githubRepoButton.click( function() {
+  //   var repoName = githubRepoSelect.
+
+  // });
 
   // logic for commit.
+  // 
   commitButton.click( function() {
     if ( !app.currentFile.path || !app.repo ) {
       console.warn( "No file or repo!" );
@@ -183,6 +189,17 @@ module.exports = function( app ) {
           app.trigger( "statusChange" );
         }
       });
+    });
+  });
+
+  pushButton.click( function() {
+    process.chdir( app.repo.path );
+    require( "child_process" ).exec( "git push origin master", {}, function( err, data ) {
+      if ( err ) {
+        console.log( err );
+        return;
+      }
+      console.log( data );
     });
   });
 
