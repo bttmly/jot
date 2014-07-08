@@ -1,7 +1,7 @@
 {
-  "name": "scrivener",
+  "name": "Jot",
   "version": "0.0.0",
-  "description": "git-powered rich text editor",
+  "description": "Git-powered rich text editor",
   "keywords": [],
   "main": "./app/views/index.html",
   "dependencies": {
