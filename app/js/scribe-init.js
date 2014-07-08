@@ -5,50 +5,57 @@
 var Scribe = window.Scribe;
 var scribe = window.editor;
 
-var ctrlKey = function ( event ) { 
+var ctrlKey = function( event ) { 
   return event.metaKey || event.ctrlKey; 
 };
 
 var commandsToKeyboardShortcutsMap = Object.freeze({
   // cmd + b
-  bold: function ( event ) { 
+  bold: function( event ) { 
     return event.metaKey && event.keyCode === 66; 
   },
   // cmd + i
-  italic: function ( event ) { 
+  italic: function( event ) { 
     return event.metaKey && event.keyCode === 73; 
   },
+  // cmd + u
+  underline: function( event ) {
+    return event.metaKey && event.keyCode === 85;
+  },
   // alt + shift + s
-  strikeThrough: function ( event ) {
+  strikeThrough: function( event ) {
     return event.altKey && event.shiftKey && event.keyCode === 83;
   },
   // alt + shift + a
-  removeFormat: function ( event ) {
+  removeFormat: function( event ) {
     return event.altKey && event.shiftKey && event.keyCode === 65;
   },
   // cmd + k (unless shift)
-  linkPrompt: function ( event ) {
+  linkPrompt: function( event ) {
     return event.metaKey && !event.shiftKey && event.keyCode === 75;
   },
   // cmd + shift + k
-  unlink: function ( event ) {
+  unlink: function( event ) {
     return event.metaKey && event.shiftKey && event.keyCode === 75;
   },
   // cmd + shift + b
-  insertUnorderedList: function ( event ) {
+  insertUnorderedList: function( event ) {
     return event.altKey && event.shiftKey && event.keyCode === 66;
   },
   // alt + shift + n
-  insertOrderedList: function ( event ) {
+  insertOrderedList: function( event ) {
     return event.altKey && event.shiftKey && event.keyCode === 78;
   },
   // alt + shift + w
-  blockquote: function ( event ) {
+  blockquote: function( event ) {
     return event.altKey && event.shiftKey && event.keyCode === 87;
   },
+  h1: function( event ) {
+    return ctrlKey( event ) && event.keyCode === 49;
+  },
   // ( cmd || ctl ) + 2
-  h2: function ( event ) {
-    return ctrlKey(event) && event.keyCode === 50;
+  h2: function( event ) {
+    return ctrlKey( event ) && event.keyCode === 50;
   }
 });
 

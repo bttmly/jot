@@ -2,4 +2,4 @@ node_modules
 app/bower_components
 dist
 **/.sass_cache
-resources/node-webkit
+**/node-webkit.app

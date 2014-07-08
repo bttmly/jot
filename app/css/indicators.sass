@@ -1,0 +1,17 @@
+@import "variables"
+
+.status-indicator
+  width: 2rem
+  height: 2rem
+  display: inline-block
+  border-radius: 10rem
+  color: white
+  background: $success_color
+  margin-right: .5rem
+  &.dirty
+    background: $warn_color
+  i
+    font-size: 1rem
+    line-height: 2rem
+    width: 2rem
+    text-align: center

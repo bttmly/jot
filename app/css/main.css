@@ -46,6 +46,9 @@ html {
   margin: 0;
   padding: 0; }
 
+body {
+  -webkit-user-select: none; }
+
 input,
 button,
 textarea,
@@ -81,11 +84,15 @@ body {
 .btn-group-xl .btn {
   font-size: 150%; }
 
+.btn-group {
+  display: flex;
+  flex-direction: row; }
+
 .btn-group .btn {
   margin-left: 0;
   margin-right: 0;
   border-radius: 0;
-  float: left;
+  flex: 1;
   border-left-width: 0; }
   .btn-group .btn:first-of-type {
     border-left-width: 1px;
@@ -156,13 +163,29 @@ label.checkable {
     border-radius: 50%;
     background: white; }
 
+.status-indicator {
+  width: 2rem;
+  height: 2rem;
+  display: inline-block;
+  border-radius: 10rem;
+  color: white;
+  background: #27ae60;
+  margin-right: 0.5rem; }
+  .status-indicator.dirty {
+    background: #f39c12; }
+  .status-indicator i {
+    font-size: 1rem;
+    line-height: 2rem;
+    width: 2rem;
+    text-align: center; }
+
 .app {
   display: flex;
   flex-direction: column;
   height: 100vh; }
   .app .controls {
     height: 8rem; }
-  .app .page {
+  .app .doc {
     flex: 1; }
 
 .controls {
@@ -172,30 +195,27 @@ label.checkable {
   width: 100%;
   box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.2); }
 
-.formatting-toolbar:after {
-  content: "";
-  clear: both;
-  display: block; }
+.formatting-toolbar {
+  width: 8.5in;
+  margin: 0.5rem auto; }
 
 .file-toolbar {
-  padding: 1em; }
-  .file-toolbar .btn-group {
-    display: inline-block;
-    text-align: center; }
+  width: 8.5in;
+  margin: 0.5rem auto;
+  text-align: center; }
 
 .backdrop {
   background: #dddddd;
-  padding: 8rem 2rem 2rem 2rem; }
+  padding: 12rem 2rem 2rem 2rem; }
 
 .editor-wrapper {
-  box-sizing: content-box;
   padding: 1in;
   background: white;
   box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.1);
   margin-left: auto;
   margin-right: auto;
-  width: 800px;
-  min-height: 600px; }
+  width: 8.5in;
+  min-height: 11in; }
 
 .editor {
   font-family: "FreightSans Pro", "Mercury", "Minion";

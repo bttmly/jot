@@ -65,11 +65,9 @@ module.exports = function( app ) {
   extend( app.actions, {
 
     open: function( path ) {
-      console.log( "Opening: " + path );
       return app.currentFile.open( path ).then( function() {
         var contents = htmlize( app.currentFile.contents );
         app.editor.setHTML( contents );
-        app.editor.trigger( "contents-changed" );
         return path;
       }).then( function( path ) {
         var dir = path.split( "/" ).slice( 0, -1 ).join( "/" );
@@ -82,7 +80,6 @@ module.exports = function( app ) {
                 console.warn( "Failed to initialize repo in " + dir );
               }
               app.repo = _repo;
-              console.log( "repo set!" );
             });
           // dir is a git repo.
           } else {
@@ -96,14 +93,17 @@ module.exports = function( app ) {
     },
     save: function() {
       var contents = markdownize( app.editor.getHTML() );
-      
+      var actualContents = $( "<div></div>" ).append( $( app.editor.getHTML() ).filter( function( el ) {
+        // remove stupid <p><br></p>
+        return !( $( this ).children().length === 1 && $( this ).children().first().is( "br" ) );
+      }) ).html();
+
+      console.log( actualContents );
+
       // working on an existing file
       if ( app.currentFile.path ) {
         return app.currentFile.save( contents ).then( function() {
-          app.fileStatus.dirtyLocal = false;
-          app.fileStatus.dirtyGit = true;
-          app.trigger( "statusChange" );
-          console.log( "Saved." );
+          app.trigger( "fileSaved" );
         });
       }
       // working on a new file
@@ -120,7 +120,39 @@ module.exports = function( app ) {
       app.currentFile.close();
       app.repo = null;
       app.editor.setHTML( "" );
-      app.editor.trigger( "content-changed" );
+      // app.editor.trigger( "content-changed" );
+    },
+    commit: function() {
+      if ( !app.currentFile.path || !app.repo ) {
+        console.warn( "No file or repo!" );
+        return;
+      }
+      var commitMessage = window.prompt( "Please enter a commit message" );
+      app.repo.add( app.currentFile.path, function( err ) {
+        if ( err ) {
+          window.alert( "git add failed! " + err );
+          app.trigger( "commitFail" );
+          return;
+        }
+        app.repo.commit( commitMessage, {}, function( err ) {
+          if ( err ) {
+            window.alert( "git commit failed! " + err );
+            app.trigger( "commitFail" );
+          } else {
+            app.trigger( "commit" );
+          }
+        });
+      });
+    },
+    push: function() {
+      app.repo.remote_push( "origin", "master", function( err, data ) {
+        if ( err ) {
+          console.warn( "Git push failed." );
+          return;
+        }
+        console.log( "Successful push." );
+        app.trigger( "push" );
+      });
     }
   });
 
@@ -146,61 +178,13 @@ module.exports = function( app ) {
   closeButton.click( function() {
     app.actions.close();
   });
-
-  // githubLoginButton.click( function() {
-  //   app.gh.username = ghUser.val();
-  //   app.gh.client = require( "octokit" ).new({
-  //     username: ghUser.val(),
-  //     password: ghPass.val()
-  //   });
-
-  //   app.gh.user = app.gh.client.getUser( app.gh.username );
-
-  //   app.gh.user.getRepos().then( function( repos ) {
-  //     app.gh.repos = repos;
-  //     githubRepoSelect.html( buildRepoOptions( repos ) );
-  //   });
-  // });
-
-  // githubRepoButton.click( function() {
-  //   var repoName = githubRepoSelect.
-
-  // });
-
-  // logic for commit.
-  // 
+  
   commitButton.click( function() {
-    if ( !app.currentFile.path || !app.repo ) {
-      console.warn( "No file or repo!" );
-      return;
-    }
-    var commitMessage = window.prompt( "Please enter a commit message" );
-    app.repo.add( app.currentFile.path, function( err ) {
-      if ( err ) {
-        window.alert( "git add failed! " + err );
-        return;
-      }
-      app.repo.commit( commitMessage, {}, function( err ) {
-        if ( err ) {
-          window.alert( "git commit failed! " + err );
-        } else {
-          console.log( "Successful commit" );
-          app.fileStatus.dirtyGit = false;
-          app.trigger( "statusChange" );
-        }
-      });
-    });
+    app.actions.commit();
   });
 
   pushButton.click( function() {
-    process.chdir( app.repo.path );
-    require( "child_process" ).exec( "git push origin master", {}, function( err, data ) {
-      if ( err ) {
-        console.log( err );
-        return;
-      }
-      console.log( data );
-    });
+    app.actions.push();
   });
 
   return app;

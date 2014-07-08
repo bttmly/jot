@@ -8,8 +8,6 @@
     <link rel="stylesheet" href="../css/main.css">
 
     <script src="../bower_components/jquery/jquery.js"></script>
-    <script src="../bower_components/jquery-ui/ui/jquery-ui.js"></script>
-    <script src="../bower_components/rangy/rangy-core.js"></script>
     <script src="../bower_components/showdown/src/showdown.js"></script>
     <script src="../bower_components/to-markdown/src/to-markdown.js"></script>
     <script src="../js/vendor/scribe-browserify.js"></script>    
@@ -28,13 +26,13 @@
     <div class="controls" id="controls">
       <div class="persistence-toolbar">
 
-        <span title="File Status" class="indicator file-indicator">
+        <span title="File Status" id="localIndicator" class="status-indicator">
           <i class="fa fa-save"></i>
         </span>
-        <span title="Local Status" class="indicator git-local-indicator">
+        <span title="Local Status" id="gitIndicator" class="status-indicator">
           <i class="octicon octicon-git-commit"></i>
         </span>
-        <span title="Remote Status" class="indicator git-remote-indicator">
+        <span title="Remote Status" id="remoteIndicator" class="status-indicator">
           <i class="octicon octicon-repo-push"></i>
         </span>
 
@@ -64,6 +62,15 @@
 
       <div class="formatting-toolbar" id="editor-toolbar">
         <div class="btn-group btn-group-xl">
+
+          <button class="btn btn-command" data-command-name="h1">
+            H1
+          </button>
+
+          <button class="btn btn-command" data-command-name="h2">
+            H2
+          </button>
+
           <button class="btn btn-command" data-command-name="bold">
             <i class="fa fa-bold"></i>
           </button>
@@ -116,7 +123,7 @@
 
     </div> <!-- /.controls -->
 
-    <div class="page" id="page">
+    <div class="doc" id="doc">
       <div class="backdrop">
         <div class="editor-wrapper" id="editor-wrapper">
           <div id="editor" class="editor" contenteditable="true"></div>
@@ -135,7 +142,9 @@
 
     $( document ).ready( function() {
 
-      $( "#page" ).on( "click", function() {
+      $( "#doc" )
+      .css( "font-family", "'FreightSerif Pro', 'Minion', 'Mercury', 'Georgia', serif")
+      .on( "click", function() {
         $( "#editor" ).focus();
       });
 
