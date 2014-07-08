@@ -46,15 +46,27 @@
   <h1>Scrivener <i class="fa fa-pencil"></i></h1>
   <p><em>Git-powered cross-platform word processor.</em></p>
 
+  <div class="filesystem-ui" id="filesystem-ui">
+    <button class="btn" id="openButton">Open File</button>
+    <button class="btn" id="saveButton">Save File</button>
+    <button class="btn" id="closeButton">Close File</button>
+  </div>
 
-  <button id="openButton">Open File</button>
-  <button id="saveButton">Save File</button>
-  <button id="closeButton">Close File</button>
-  <button id="commitButton">Commit</button>
+  <button class="btn" id="commitButton">Commit</button>
 
-  <input id="githubUsername" type="text">
-  <input id="githubPassword" type="password">
-  <button id="githubButton">Login to GitHub</button>
+  <div class="github-ui" id="github-ui">
+    <div class="github-login" id="github-login">
+      <input id="githubUsername" type="text" placeholder="GitHub username">
+      <input id="githubPassword" type="password" placeholder="GitHub password">
+      <button class="btn" id="githubLoginButton">Login to GitHub</button>
+    </div>
+    <div class="github-fetch" id="github-fetch">
+      <select id="githubRepoSelect">
+        <option selected disabled>Waiting for repos...</option>
+      </select>
+      <button class="btn" id="githubRepoButton">Get Repo</button>
+    </div>
+  </div>
 
   <input id="openFile" type="file" style="display:none" accept="text/*/">
   <input id="saveFile" type="file" style="display:none" accept="text/*/" nwsaveas>

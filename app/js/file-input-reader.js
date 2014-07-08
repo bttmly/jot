@@ -10,10 +10,14 @@ var saveButton = $( "#saveButton" );
 var openButton = $( "#openButton" );
 var closeButton = $( "#closeButton" );
 var commitButton = $( "#commitButton" );
-var githubButton = $( "#githubButton" );
 
+
+var githubLoginButton = $( "#githubLoginButton" );
 var ghUser = $( "#githubUsername" );
 var ghPass = $( "#githubPassword" );
+
+var githubRepoSelect = $( "#githubRepoSelect" );
+var githubRepoButton = $( "#githubRepoButton" );
 
 var saveFile = $( "#saveFile" );
 var openFile = $( "#openFile" ); 
@@ -23,6 +27,16 @@ var console = window.console;
 openButton.click( function() {
   openFile.click();
 });
+
+var buildRepoOptions( repos ) {
+  return repos.map( function( repo ) {
+    var str = "";
+    str += "<option value='" + repo.name "'>";
+    str += repo.name;
+    str += "</option>";
+    return str;
+  });
+};
 
 module.exports = function( app ) {
 
@@ -58,14 +72,8 @@ module.exports = function( app ) {
         app.editor.trigger( "hallomodified", { contents: contents } );
         return path;
       }).then( function( path ) {
-        
-        console.log( path );
-
         var dir = path.split( "/" ).slice( 0, -1 ).join( "/" );
         var repo = git( dir );
-
-        console.log( repo );
-
         repo.commits( function( err, commits ) {
           // err if dir isn't a git repo
           if ( err ) {
@@ -139,17 +147,18 @@ module.exports = function( app ) {
     app.actions.close();
   });
 
-  githubButton.click( function() {
-    app.gh.client = require( "octonode" ).client({
+  githubLoginButton.click( function() {
+    app.gh.username = ghUser.val();
+    app.gh.client = require( "octokit" ).new({
       username: ghUser.val(),
       password: ghPass.val()
     });
 
-    app.gh.user = app.gh.client.me();
-    
-    app.gh.user.repos( function( err, response ) {
-      app.gh.repos = response;
-      console.log( response );
+    app.gh.user = app.gh.client.getUser( app.gh.username );
+
+    app.gh.user.getRepos().then( function( repos ) {
+      app.gh.repos = repos;
+      githubRepoSelect.html( buildRepoOptions( repos ) );
     });
   });
 
@@ -159,9 +168,7 @@ module.exports = function( app ) {
       console.warn( "No file or repo!" );
       return;
     }
-
     var commitMessage = window.prompt( "Please enter a commit message" );
-
     app.repo.add( app.currentFile.path, function( err ) {
       if ( err ) {
         window.alert( "git add failed! " + err );
@@ -177,8 +184,6 @@ module.exports = function( app ) {
         }
       });
     });
-
-
   });
 
   return app;
