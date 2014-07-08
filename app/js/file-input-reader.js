@@ -2,6 +2,7 @@
 
 var $ = require( "jquery" );
 var extend = require( "extend" );
+var git = require( "gift" );
 var toMarkdown = require( "to-markdown" ).toMarkdown;
 var Showdown = require( "showdown" );
 
@@ -16,6 +17,8 @@ var ghPass = $( "#githubPassword" );
 
 var saveFile = $( "#saveFile" );
 var openFile = $( "#openFile" ); 
+
+var console = window.console;
 
 openButton.click( function() {
   openFile.click();
@@ -48,14 +51,39 @@ module.exports = function( app ) {
   extend( app.actions, {
 
     open: function( path ) {
-      app.log( "Opening: " + path );
+      console.log( "Opening: " + path );
       return app.currentFile.open( path ).then( function() {
         var contents = htmlize( app.currentFile.contents );
         app.editor.html( contents );
         app.editor.trigger( "hallomodified", { contents: contents } );
-        return;
-      }).then( function() {
-        app.log( "Should go find the git repo here" );
+        return path;
+      }).then( function( path ) {
+        
+        console.log( path );
+
+        var dir = path.split( "/" ).slice( 0, -1 ).join( "/" );
+        var repo = git( dir );
+
+        console.log( repo );
+
+        repo.commits( function( err, commits ) {
+          // err if dir isn't a git repo
+          if ( err ) {
+            git.init( dir, function( err, _repo ) {
+              if ( err ) {
+                console.warn( "Failed to initialize repo in " + dir );
+              }
+              app.repo = _repo;
+              console.log( "repo set!" );
+            });
+          // dir is a git repo.
+          } else {
+            app.repo = repo;
+            console.log( "repo set!" );
+          }
+        });
+
+
       });
     },
     save: function() {
@@ -65,8 +93,9 @@ module.exports = function( app ) {
       if ( app.currentFile.path ) {
         return app.currentFile.save( contents ).then( function() {
           app.fileStatus.dirtyLocal = false;
+          app.fileStatus.dirtyGit = true;
           app.trigger( "statusChange" );
-          app.log( "Saved." );
+          console.log( "Saved." );
         });
       }
       // working on a new file
@@ -81,6 +110,7 @@ module.exports = function( app ) {
         }
       }
       app.currentFile.close();
+      app.repo = null;
       app.editor.html( "" );
       app.editor.trigger( "hallomodified", { contents: "" } );
     }
@@ -119,8 +149,35 @@ module.exports = function( app ) {
     
     app.gh.user.repos( function( err, response ) {
       app.gh.repos = response;
-      app.log( response );
+      console.log( response );
     });
+  });
+
+  // logic for commit.
+  commitButton.click( function() {
+    if ( !app.currentFile.path || !app.repo ) {
+      console.warn( "No file or repo!" );
+      return;
+    }
+
+    var commitMessage = window.prompt( "Please enter a commit message" );
+
+    app.repo.add( app.currentFile.path, function( err ) {
+      if ( err ) {
+        window.alert( "git add failed! " + err );
+        return;
+      }
+      app.repo.commit( commitMessage, {}, function( err ) {
+        if ( err ) {
+          window.alert( "git commit failed! " + err );
+        } else {
+          console.log( "Successful commit" );
+          app.fileStatus.dirtyGit = false;
+          app.trigger( "statusChange" );
+        }
+      });
+    });
+
 
   });
 

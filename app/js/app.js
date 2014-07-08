@@ -24,6 +24,7 @@ extend( app, {
     dirtyLocal: false,
     dirtyGit: false,
   },
+  repo: null,
   log: function( str ) {
     this.logs.push( str );
   },
