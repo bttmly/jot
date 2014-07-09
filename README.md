@@ -6,7 +6,8 @@ Two-day hackathon project at Hack Reactor.
 
 ## Open Source Projects Used
 
-*   node-webkit
+NODE WEBKIT! ... and others ...
+
 *   gift
 *   mousetrap
 *   jquery
