@@ -2,7 +2,7 @@
 
 _Git-powered cross-platform desktop word processor written in JavaScript._
 
-Two-day hackathon project at Hack Reactor.
+Two-day hackathon project at Hack Reactor. Wooo!
 
 ## Open Source Projects Used
 
