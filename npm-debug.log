@@ -1,0 +1,134 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/Cellar/node/0.10.26/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   '--save',
+1 verbose cli   'notify' ]
+2 info using npm@1.4.3
+3 info using node@v0.10.26
+4 warn package.json Jot@0.0.0 No repository field.
+5 warn package.json to-markdown@0.0.1 No repository field.
+6 verbose readDependencies using package.json deps
+7 verbose cache add [ 'notify', null ]
+8 verbose cache add name=undefined spec="notify" args=["notify",null]
+9 verbose parsed url { protocol: null,
+9 verbose parsed url   slashes: null,
+9 verbose parsed url   auth: null,
+9 verbose parsed url   host: null,
+9 verbose parsed url   port: null,
+9 verbose parsed url   hostname: null,
+9 verbose parsed url   hash: null,
+9 verbose parsed url   search: null,
+9 verbose parsed url   query: null,
+9 verbose parsed url   pathname: 'notify',
+9 verbose parsed url   path: 'notify',
+9 verbose parsed url   href: 'notify' }
+10 silly lockFile 4f08301d-notify notify
+11 verbose lock notify /Users/nickbottomley/.npm/4f08301d-notify.lock
+12 silly lockFile 4f08301d-notify notify
+13 silly lockFile 4f08301d-notify notify
+14 verbose addNamed [ 'notify', '' ]
+15 verbose addNamed [ null, '*' ]
+16 silly lockFile e5e1da5f-notify notify@
+17 verbose lock notify@ /Users/nickbottomley/.npm/e5e1da5f-notify.lock
+18 silly addNameRange { name: 'notify', range: '*', hasData: false }
+19 verbose url raw notify
+20 verbose url resolving [ 'https://registry.npmjs.org/', './notify' ]
+21 verbose url resolved https://registry.npmjs.org/notify
+22 info trying registry request attempt 1 at 16:10:12
+23 verbose etag "E26TY2XX56MO3VSNWA1AP1VVF"
+24 http GET https://registry.npmjs.org/notify
+25 http 304 https://registry.npmjs.org/notify
+26 silly registry.get cb [ 304,
+26 silly registry.get   { date: 'Tue, 08 Jul 2014 23:10:12 GMT',
+26 silly registry.get     server: 'Apache',
+26 silly registry.get     via: '1.1 varnish',
+26 silly registry.get     'last-modified': 'Tue, 08 Jul 2014 23:10:12 GMT',
+26 silly registry.get     'cache-control': 'max-age=30',
+26 silly registry.get     etag: '"E26TY2XX56MO3VSNWA1AP1VVF"',
+26 silly registry.get     'x-served-by': 'cache-sjc3127-SJC',
+26 silly registry.get     'x-cache': 'MISS',
+26 silly registry.get     'x-cache-hits': '0',
+26 silly registry.get     'x-timer': 'S1404861012.920987,VS0,VE30',
+26 silly registry.get     vary: 'Accept',
+26 silly registry.get     'content-length': '0',
+26 silly registry.get     'keep-alive': 'timeout=10, max=50',
+26 silly registry.get     connection: 'Keep-Alive' } ]
+27 verbose etag notify from cache
+28 silly addNameRange number 2 { name: 'notify', range: '*', hasData: true }
+29 silly addNameRange versions [ 'notify', [ '0.1.0' ] ]
+30 verbose addNamed [ 'notify', '0.1.0' ]
+31 verbose addNamed [ '0.1.0', '0.1.0' ]
+32 silly lockFile b0e6374d-notify-0-1-0 notify@0.1.0
+33 verbose lock notify@0.1.0 /Users/nickbottomley/.npm/b0e6374d-notify-0-1-0.lock
+34 silly lockFile b0e6374d-notify-0-1-0 notify@0.1.0
+35 silly lockFile b0e6374d-notify-0-1-0 notify@0.1.0
+36 silly lockFile e5e1da5f-notify notify@
+37 silly lockFile e5e1da5f-notify notify@
+38 silly resolved [ { name: 'notify',
+38 silly resolved     version: '0.1.0',
+38 silly resolved     description: 'Native Node.js C++ extension for displaying desktop notifications using GNOME\'s libnotify library.',
+38 silly resolved     homepage: 'https://github.com/olalonde/node-notify',
+38 silly resolved     author:
+38 silly resolved      { name: 'Olivier Lalonde',
+38 silly resolved        email: 'olalonde@gmail.com',
+38 silly resolved        url: 'http://www.syskall.com/' },
+38 silly resolved     repository:
+38 silly resolved      { type: 'git',
+38 silly resolved        url: 'https://github.com/olalonde/node-notify.git' },
+38 silly resolved     scripts:
+38 silly resolved      { preinstall: 'node-waf configure && node-waf build',
+38 silly resolved        preuninstall: 'rm -rf build/*' },
+38 silly resolved     main: 'build/default/gtknotify.node',
+38 silly resolved     readme: '__THIS IS A WORK IN PROGRESS! THE TUTO WILL BE UP ON [HTTP://SYSKALL.COM](HTTP://SYSKALL.COM) WITHIN A FEW DAYS__\n\nPart 1 (building a V8 extension) available here: [http://syskall.com/how-to-roll-out-your-own-javascript-api-with](http://syskall.com/how-to-roll-out-your-own-javascript-api-with)\n\n## Install ##\n\n    node-waf configure && node-waf build\n\n## References ##\n\n- [https://www.cloudkick.com/blog/2010/aug/23/writing-nodejs-native-extensions/]()\n- [https://github.com/pquerna/node-extension-examples](https://github.com/pquerna/node-extension-examples)\n- [http://code.google.com/apis/v8/embed.html](http://code.google.com/apis/v8/embed.html)\n- irc.freenode.org #v8 #node.js\n- [https://github.com/ncb000gt/node.bcrypt.js](https://github.com/ncb000gt/node.bcrypt.js)\n- [https://github.com/joyent/node](https://github.com/joyent/node)\n',
+38 silly resolved     readmeFilename: 'README.md',
+38 silly resolved     bugs: { url: 'https://github.com/olalonde/node-notify/issues' },
+38 silly resolved     _id: 'notify@0.1.0',
+38 silly resolved     _from: 'notify@' } ]
+39 info install notify@0.1.0 into /Users/nickbottomley/Documents/dev/github/nick/jot
+40 info installOne notify@0.1.0
+41 info /Users/nickbottomley/Documents/dev/github/nick/jot/node_modules/notify unbuild
+42 verbose tar unpack /Users/nickbottomley/.npm/notify/0.1.0/package.tgz
+43 silly lockFile 3fcb313b-hub-nick-jot-node-modules-notify tar:///Users/nickbottomley/Documents/dev/github/nick/jot/node_modules/notify
+44 verbose lock tar:///Users/nickbottomley/Documents/dev/github/nick/jot/node_modules/notify /Users/nickbottomley/.npm/3fcb313b-hub-nick-jot-node-modules-notify.lock
+45 silly lockFile 0dc1e366-ley-npm-notify-0-1-0-package-tgz tar:///Users/nickbottomley/.npm/notify/0.1.0/package.tgz
+46 verbose lock tar:///Users/nickbottomley/.npm/notify/0.1.0/package.tgz /Users/nickbottomley/.npm/0dc1e366-ley-npm-notify-0-1-0-package-tgz.lock
+47 silly gunzTarPerm modes [ '755', '644' ]
+48 silly gunzTarPerm extractEntry package.json
+49 silly gunzTarPerm extractEntry .npmignore
+50 silly gunzTarPerm extractEntry README.md
+51 silly gunzTarPerm extractEntry LICENSE
+52 silly gunzTarPerm extractEntry TUTORIAL.md
+53 silly gunzTarPerm extractEntry demo/demo.js
+54 silly gunzTarPerm extractEntry src/node_gtknotify.cpp
+55 silly gunzTarPerm extractEntry wscript
+56 silly lockFile 3fcb313b-hub-nick-jot-node-modules-notify tar:///Users/nickbottomley/Documents/dev/github/nick/jot/node_modules/notify
+57 silly lockFile 3fcb313b-hub-nick-jot-node-modules-notify tar:///Users/nickbottomley/Documents/dev/github/nick/jot/node_modules/notify
+58 silly lockFile 0dc1e366-ley-npm-notify-0-1-0-package-tgz tar:///Users/nickbottomley/.npm/notify/0.1.0/package.tgz
+59 silly lockFile 0dc1e366-ley-npm-notify-0-1-0-package-tgz tar:///Users/nickbottomley/.npm/notify/0.1.0/package.tgz
+60 info preinstall notify@0.1.0
+61 verbose unsafe-perm in lifecycle true
+62 info notify@0.1.0 Failed to exec preinstall script
+63 info /Users/nickbottomley/Documents/dev/github/nick/jot/node_modules/notify unbuild
+64 info preuninstall notify@0.1.0
+65 verbose unsafe-perm in lifecycle true
+66 info uninstall notify@0.1.0
+67 verbose true,/Users/nickbottomley/Documents/dev/github/nick/jot/node_modules,/Users/nickbottomley/Documents/dev/github/nick/jot/node_modules unbuild notify@0.1.0
+68 info postuninstall notify@0.1.0
+69 error notify@0.1.0 preinstall: `node-waf configure && node-waf build`
+69 error Exit status 127
+70 error Failed at the notify@0.1.0 preinstall script.
+70 error This is most likely a problem with the notify package,
+70 error not with npm itself.
+70 error Tell the author that this fails on your system:
+70 error     node-waf configure && node-waf build
+70 error You can get their info via:
+70 error     npm owner ls notify
+70 error There is likely additional logging output above.
+71 error System Darwin 13.1.0
+72 error command "/usr/local/Cellar/node/0.10.26/bin/node" "/usr/local/bin/npm" "install" "--save" "notify"
+73 error cwd /Users/nickbottomley/Documents/dev/github/nick/jot
+74 error node -v v0.10.26
+75 error npm -v 1.4.3
+76 error code ELIFECYCLE
+77 verbose exit [ 1, true ]

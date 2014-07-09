@@ -52,7 +52,7 @@
         </label>
 
         <label class="checkable">
-          <input type="checkbox" id="pushOnSave">
+          <input type="checkbox" id="pushOnCommit">
           <span class="indicator"></span>
           Push on Save
         </label>
@@ -130,7 +130,7 @@
     <div class="doc" id="doc">
       <div class="backdrop">
         <div class="editor-wrapper" id="editor-wrapper">
-          <div id="editor" class="editor" contenteditable="true"></div>
+          <div id="editor" class="editor mousetrap" contenteditable="true"></div>
         </div>
       </div>
     </div>
@@ -147,10 +147,11 @@
     $( document ).ready( function() {
 
       $( "#doc" )
-      .css( "font-family", "'FreightSerif Pro', 'Minion', 'Mercury', 'Georgia', serif")
       .on( "click", function() {
         $( "#editor" ).focus();
       });
+
+      $( "#editor" ).css( "font-family", "'FreightSerif Pro', 'Minion', 'Mercury', 'Georgia', serif");
 
     });
 
@@ -158,5 +159,6 @@
   
   <script src="../js/scribe-init.js"></script>
   <script src="../js/init.js"></script>
+  <script src="../js/keyboard.js"></script>
 </body>
 </html>

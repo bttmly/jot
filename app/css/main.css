@@ -66,7 +66,8 @@ body {
   border: 1px solid #2980b9;
   padding: 0.25em 0.5em;
   border-radius: 0.25rem;
-  color: #2980b9; }
+  color: #2980b9;
+  transition: all 0.2s ease-in-out; }
   .btn:hover {
     background: #2981bb;
     color: white; }
@@ -163,21 +164,20 @@ label.checkable {
     border-radius: 50%;
     background: white; }
 
+.status-indicators {
+  position: absolute;
+  right: 1rem; }
+
 .status-indicator {
-  width: 2rem;
-  height: 2rem;
+  width: 1.5rem;
+  height: 1.5rem;
   display: inline-block;
-  border-radius: 10rem;
+  border-radius: 0.25rem;
   color: white;
   background: #27ae60;
   margin-right: 0.5rem; }
   .status-indicator.dirty {
     background: #f39c12; }
-  .status-indicator i {
-    font-size: 1rem;
-    line-height: 2rem;
-    width: 2rem;
-    text-align: center; }
 
 .app {
   display: flex;
@@ -198,11 +198,22 @@ label.checkable {
 .formatting-toolbar {
   width: 8.5in;
   margin: 0.5rem auto; }
+  .formatting-toolbar .btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5; }
 
-.file-toolbar {
+.persistence-toolbar {
   width: 8.5in;
   margin: 0.5rem auto;
-  text-align: center; }
+  display: flex;
+  justify-content: space-between; }
+  .persistence-toolbar .btn:disabled {
+    cursor: not-allowed;
+    background: #cccccc;
+    border-color: #cccccc;
+    color: white;
+    opacity: 0.5;
+    pointer-events: none; }
 
 .backdrop {
   background: #dddddd;
@@ -218,7 +229,7 @@ label.checkable {
   min-height: 11in; }
 
 .editor {
-  font-family: "FreightSans Pro", "Mercury", "Minion";
+  font-family: "FreightSerif Pro", "Minion", "Mercury", "Georgia", serif;
   font-size: 125%;
   max-width: 900px; }
   .editor:focus {

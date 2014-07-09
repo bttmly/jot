@@ -593,7 +593,9 @@ var push = arrayRef.push, unshift = arrayRef.unshift;
 function createWrapper(func, bitmask, partialArgs, partialRightArgs, thisArg, arity) {
     var isBind = bitmask & 1, isBindKey = bitmask & 2, isCurry = bitmask & 4, isCurryBound = bitmask & 8, isPartial = bitmask & 16, isPartialRight = bitmask & 32;
     if (!isBindKey && !isFunction(func)) {
-        throw new TypeError();
+        // throw new TypeError();
+        console.warn( new Error() );
+        console.trace();
     }
     if (isPartial && !partialArgs.length) {
         bitmask &= ~16;
@@ -1499,7 +1501,9 @@ module.exports = function () {
             if (container.nodeType === Node.TEXT_NODE) {
                 container.parentNode.removeChild(container);
             } else {
-                throw new Error('Cannot empty non-text node!');
+                console.warn( new Error('Cannot empty non-text node!') );
+                console.trace();
+                // throw new Error('Cannot empty non-text node!');
             }
         }
         function input(event) {

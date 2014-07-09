@@ -10,8 +10,19 @@
 .formatting-toolbar
   width: 8.5in
   margin: .5rem auto
+  .btn:disabled
+    cursor: not-allowed
+    opacity: .5
 
-.file-toolbar
+.persistence-toolbar
   width: 8.5in
   margin: .5rem auto
-  text-align: center
+  display: flex
+  justify-content: space-between
+  .btn:disabled
+    cursor: not-allowed
+    background: #ccc
+    border-color: #ccc
+    color: white
+    opacity: .5
+    pointer-events: none

@@ -3,6 +3,7 @@
 var extend = require( "extend" );
 var EventEmitter = require( "events" ).EventEmitter;
 var $ = require( "jquery" );
+var growl = require( "growl" );
 
 var app = Object.create( EventEmitter.prototype );
 
@@ -14,11 +15,21 @@ extend( app, {
   currentFile: require( "../js/file.js" ),
   octonode: require( "../js/as-promised.js" )( "octonode" ),
   git: require( "../js/as-promised.js" )( "gift" ),
+  growl: function( str ) {
+    growl( str, { title: "Jot" });
+    return;
+  },
   editor: window.editor,
   fileStatus: {
     dirtyLocal: false,
     dirtyGit: false,
     dirtyRemote: false,
+  },
+  resetStatus: function() {
+    this.dirtyLocal = false;
+    this.dirtyGit = false;
+    this.dirtyRemote = false;
+    this.trigger( "statusChange" );
   },
   repo: null,
   ui: {
@@ -37,6 +48,13 @@ var updateIndicators = function( fileStatus ) {
   $( "#remoteIndicator" ).toggleClass( "dirty", fileStatus.dirtyRemote );
 };
 
+$( "#commitOnSave" ).change( function() {
+  $( "#commitButton" ).prop( "disabled", $( this ).is( ":checked" ) );
+});
+
+$( "#pushOnCommit" ).change( function() {
+  $( "#pushButton" ).prop( "disabled", $( this ).is( ":checked" ) );
+});
 
 app.currentFile.on( "fileClosed", function() {
   app.fileStatus.dirtyLocal = false;

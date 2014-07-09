@@ -65,6 +65,7 @@ module.exports = function( app ) {
   extend( app.actions, {
 
     open: function( path ) {
+      app.resetStatus();
       return app.currentFile.open( path ).then( function() {
         var contents = htmlize( app.currentFile.contents );
         app.editor.setHTML( contents );
@@ -72,23 +73,25 @@ module.exports = function( app ) {
       }).then( function( path ) {
         var dir = path.split( "/" ).slice( 0, -1 ).join( "/" );
         var repo = git( dir );
+        // need a better method to detect this
         repo.commits( function( err, commits ) {
           // err if dir isn't a git repo
           if ( err ) {
-            git.init( dir, function( err, _repo ) {
-              if ( err ) {
-                console.warn( "Failed to initialize repo in " + dir );
-              }
-              app.repo = _repo;
-            });
+            app.growl( "File isn't in a git repo." );
+
+            // don't init directories for now.
+
+            // git.init( dir, function( err, _repo ) {
+            //   if ( err ) {
+            //     app.growl( "Failed to initialize repo in " + dir );
+            //   }
+            //   app.repo = _repo;
+            // });
           // dir is a git repo.
           } else {
             app.repo = repo;
-            console.log( "repo set!" );
           }
         });
-
-
       });
     },
     save: function() {
@@ -98,11 +101,9 @@ module.exports = function( app ) {
         return !( $( this ).children().length === 1 && $( this ).children().first().is( "br" ) );
       }) ).html();
 
-      console.log( actualContents );
-
       // working on an existing file
       if ( app.currentFile.path ) {
-        return app.currentFile.save( contents ).then( function() {
+        return app.currentFile.save( markdownize( actualContents ) ).then( function() {
           app.trigger( "fileSaved" );
         });
       }
@@ -120,7 +121,7 @@ module.exports = function( app ) {
       app.currentFile.close();
       app.repo = null;
       app.editor.setHTML( "" );
-      // app.editor.trigger( "content-changed" );
+      app.resetStatus();
     },
     commit: function() {
       if ( !app.currentFile.path || !app.repo ) {
@@ -130,13 +131,13 @@ module.exports = function( app ) {
       var commitMessage = window.prompt( "Please enter a commit message" );
       app.repo.add( app.currentFile.path, function( err ) {
         if ( err ) {
-          window.alert( "git add failed! " + err );
+          app.growl( "git add failed! " + err );
           app.trigger( "commitFail" );
           return;
         }
         app.repo.commit( commitMessage, {}, function( err ) {
           if ( err ) {
-            window.alert( "git commit failed! " + err );
+            app.growl( "git commit failed! " + err );
             app.trigger( "commitFail" );
           } else {
             app.trigger( "commit" );
@@ -145,12 +146,13 @@ module.exports = function( app ) {
       });
     },
     push: function() {
+
       app.repo.remote_push( "origin", "master", function( err, data ) {
         if ( err ) {
-          console.warn( "Git push failed." );
+          app.growl( "Git push failed." );
           return;
         }
-        console.log( "Successful push." );
+        app.growl( "Successful push." );
         app.trigger( "push" );
       });
     }
