@@ -2,17 +2,14 @@
 
 _Git-powered cross-platform desktop word processor written in JavaScript._
 
-Two-day hackathon project at Hack Reactor. Wooo!
+Two-day hackathon project at Hack Reactor.
 
 ## Open Source Projects Used
 
-NODE WEBKIT! ... and others ...
-- scribe
-- gift
-- mousetrap
-- jquery
-- to-markdown
-- showdown
-
-### Looks like this
-![Jot screenshot](https://www.dropbox.com/s/guwc5vmsbjacn6s/jot-screenshot.png "Jot")
+- [node-webkit](https://github.com/rogerwang/node-webkit)
+- [scribe](https://github.com/guardian/scribe)
+- [gift](https://github.com/notatestuser/gift)
+- [mousetrap](https://github.com/ccampbell/mousetrap)
+- [jquery](https://github.com/jquery/jquery)
+- [to-markdown](https://github.com/domchristie/to-markdown)
+- [showdown](https://github.com/coreyti/showdown)
